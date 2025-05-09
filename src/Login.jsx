@@ -74,7 +74,7 @@ export default function Login() {
       // Debug: Confirm values are set before navigating
       console.log('Token set:', localStorage.getItem('token'));
       console.log('User set:', localStorage.getItem('user'));
-      window.location.href = '/dashboard';
+      navigate('/dashboard');
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
     }
