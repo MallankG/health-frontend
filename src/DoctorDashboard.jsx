@@ -7,7 +7,7 @@ import Notifications from './Notifications';
 import Patients from './Patients';
 
 const DoctorDashboard = () => {
-  const [activeTab, setActiveTab] = useState('appointments');
+  const [activeTab, setActiveTab] = useState('patients');
 
   const renderTab = () => {
     switch (activeTab) {

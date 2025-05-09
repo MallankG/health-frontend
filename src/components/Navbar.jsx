@@ -39,7 +39,9 @@ const Navbar = ({ isAuthenticated, showSidebar = false, children }) => {
         {showSidebar && isAuthenticated && (
           <nav className="col-md-3 col-lg-2 d-md-block bg-white sidebar shadow-sm p-0 pt-4 d-none d-md-block">
             <ul className="nav flex-column gap-2">
-              <li className="nav-item"><Link to="/dashboard" className="nav-link"><i className="bi bi-house-door me-2"></i>Home</Link></li>
+              {user?.role !== 'doctor' && (
+                <li className="nav-item"><Link to="/dashboard" className="nav-link"><i className="bi bi-house-door me-2"></i>Home</Link></li>
+              )}
               {user?.role === 'doctor' && (
                 <>
                   <li className="nav-item"><Link to="/patients" className="nav-link"><i className="bi bi-person-badge me-2"></i>Patients</Link></li>
