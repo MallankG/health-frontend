@@ -28,17 +28,9 @@ const DoctorDashboard = () => {
     }
   };
 
-  // Render tab selection buttons at the top of the main area
+  // Render the active tab content
   return (
     <>
-      <div className="mb-4 d-flex flex-wrap gap-2">
-        <button className={`btn btn-${activeTab==='appointments'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('appointments')}>Appointments</button>
-        <button className={`btn btn-${activeTab==='patients'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('patients')}>Patients</button>
-        <button className={`btn btn-${activeTab==='reports'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('reports')}>Reports</button>
-        <button className={`btn btn-${activeTab==='vitals'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('vitals')}>Vitals</button>
-        <button className={`btn btn-${activeTab==='chat'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('chat')}>Chat</button>
-        <button className={`btn btn-${activeTab==='notifications'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('notifications')}>Notifications</button>
-      </div>
       {renderTab()}
     </>
   );
