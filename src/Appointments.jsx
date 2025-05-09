@@ -52,6 +52,30 @@ export default function Appointments() {
     }
   };
 
+  // Doctor accepts appointment
+  const handleAccept = async (id) => {
+    setError(''); setSuccess('');
+    try {
+      await api.patch(`/appointments/${id}/accept`);
+      setSuccess('Appointment accepted.');
+      fetchAppointments();
+    } catch {
+      setError('Failed to accept appointment');
+    }
+  };
+
+  // Doctor denies/cancels appointment
+  const handleDeny = async (id) => {
+    setError(''); setSuccess('');
+    try {
+      await api.patch(`/appointments/${id}/cancel`);
+      setSuccess('Appointment denied/cancelled.');
+      fetchAppointments();
+    } catch {
+      setError('Failed to deny/cancel appointment');
+    }
+  };
+
   // Autocomplete for doctor name
   const handleDoctorInput = async (e) => {
     const value = e.target.value;
@@ -150,6 +174,17 @@ export default function Appointments() {
                   <div className="mb-2">Doctor: <span className="fw-semibold">{a.doctor?.name || a.doctor}</span></div>
                   <div className="mb-2">Patient: <span className="fw-semibold">{a.patient?.name || a.patient}</span></div>
                   {a.purpose && <div className="mb-2">Purpose: {a.purpose}</div>}
+                  {/* Doctor actions for requested appointments */}
+                  {user.role === 'doctor' && a.status === 'requested' && (
+                    <div className="mt-2 d-flex gap-2">
+                      <button className="btn btn-success btn-sm" onClick={() => handleAccept(a._id)}>
+                        <i className="bi bi-check-circle me-1"></i>Accept
+                      </button>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDeny(a._id)}>
+                        <i className="bi bi-x-circle me-1"></i>Deny
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
