@@ -11,6 +11,9 @@ import Chat from './Chat';
 import LandingPage from './LandingPage';
 import Notifications from './Notifications';
 import Dashboard from './Dashboard';
+import DoctorDashboard from './DoctorDashboard';
+import ForgotPassword from './ForgotPassword';
+import ResetPassword from './ResetPassword';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
@@ -40,6 +43,9 @@ function App() {
         <Route path="/vitals" element={isAuthenticated ? <Vitals /> : <Navigate to="/login" />} />
         <Route path="/chat" element={isAuthenticated ? <Chat /> : <Navigate to="/login" />} />
         <Route path="/notifications" element={isAuthenticated ? <Notifications /> : <Navigate to="/login" />} />
+        <Route path="/doctor-dashboard" element={isAuthenticated ? <DoctorDashboard /> : <Navigate to="/login" />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="*" element={<Navigate to={isAuthenticated ? '/dashboard' : '/login'} />} />
       </Routes>
     </Router>

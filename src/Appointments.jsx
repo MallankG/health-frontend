@@ -56,6 +56,7 @@ export default function Appointments() {
         <div className="row mb-4">
           <div className="col-12 d-flex justify-content-between align-items-center flex-wrap gap-2">
             <h2 className="fw-bold mb-0"><i className="bi bi-calendar-check me-2 text-primary"></i>Appointments</h2>
+            {/* Only show booking form for patients */}
             {user.role === 'patient' && (
               <form onSubmit={handleBook} className="d-flex flex-wrap gap-2 align-items-center" style={{maxWidth: 600}}>
                 <input type="text" placeholder="Doctor Name" className="form-control" value={doctor} onChange={e => setDoctor(e.target.value)} />
@@ -63,6 +64,13 @@ export default function Appointments() {
                 <input type="text" placeholder="Purpose" className="form-control" value={purpose} onChange={e => setPurpose(e.target.value)} />
                 <button type="submit" className="btn btn-success"><i className="bi bi-plus-circle me-1"></i>Book</button>
               </form>
+            )}
+            {/* For doctors, optionally add a patient filter */}
+            {user.role === 'doctor' && (
+              <input type="text" placeholder="Filter by patient name..." className="form-control" style={{maxWidth: 200}} onChange={e => {
+                const val = e.target.value.toLowerCase();
+                setAppointments(prev => prev.filter(a => (a.patient?.name || '').toLowerCase().includes(val)));
+              }} />
             )}
           </div>
         </div>

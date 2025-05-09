@@ -45,6 +45,9 @@ export default function Login() {
           <div className="mt-3 text-center text-secondary">
             Don't have an account? <Link to="/register" className="text-primary">Register</Link>
           </div>
+          <div className="mt-3 text-center text-secondary">
+            <Link to="/forgot-password" className="text-primary">Forgot Password?</Link>
+          </div>
         </div>
       </div>
     </div>
