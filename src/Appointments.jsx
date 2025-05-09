@@ -11,6 +11,8 @@ export default function Appointments() {
   const [purpose, setPurpose] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [doctorSuggestions, setDoctorSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
 
   const fetchAppointments = async () => {
     try {
@@ -50,6 +52,31 @@ export default function Appointments() {
     }
   };
 
+  // Autocomplete for doctor name
+  const handleDoctorInput = async (e) => {
+    const value = e.target.value;
+    setDoctor(value);
+    if (value.length < 2) {
+      setDoctorSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+    try {
+      const res = await api.get(`/users/search?q=${encodeURIComponent(value)}`);
+      setDoctorSuggestions(res.data.filter(u => u.role === 'doctor'));
+      setShowSuggestions(true);
+    } catch {
+      setDoctorSuggestions([]);
+      setShowSuggestions(false);
+    }
+  };
+
+  const handleSelectDoctor = (d) => {
+    setDoctor(d.name);
+    setDoctorSuggestions([]);
+    setShowSuggestions(false);
+  };
+
   return (
     <DashboardLayout>
       <div className="container-fluid">
@@ -58,8 +85,33 @@ export default function Appointments() {
             <h2 className="fw-bold mb-0"><i className="bi bi-calendar-check me-2 text-primary"></i>Appointments</h2>
             {/* Only show booking form for patients */}
             {user.role === 'patient' && (
-              <form onSubmit={handleBook} className="d-flex flex-wrap gap-2 align-items-center" style={{maxWidth: 600}}>
-                <input type="text" placeholder="Doctor Name" className="form-control" value={doctor} onChange={e => setDoctor(e.target.value)} />
+              <form onSubmit={handleBook} className="d-flex flex-wrap gap-2 align-items-center" style={{maxWidth: 600, position: 'relative'}}>
+                <div style={{position: 'relative', width: 200}}>
+                  <input
+                    type="text"
+                    placeholder="Doctor Name"
+                    className="form-control"
+                    value={doctor}
+                    onChange={handleDoctorInput}
+                    autoComplete="off"
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 100)}
+                    onFocus={() => doctorSuggestions.length > 0 && setShowSuggestions(true)}
+                  />
+                  {showSuggestions && doctorSuggestions.length > 0 && (
+                    <ul className="list-group position-absolute w-100" style={{zIndex: 10, top: '100%'}}>
+                      {doctorSuggestions.map(d => (
+                        <li
+                          key={d._id}
+                          className="list-group-item list-group-item-action"
+                          style={{cursor: 'pointer'}}
+                          onMouseDown={() => handleSelectDoctor(d)}
+                        >
+                          {d.name} <span className="text-muted small">({d.email})</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
                 <input type="datetime-local" className="form-control" value={date} onChange={e => setDate(e.target.value)} />
                 <input type="text" placeholder="Purpose" className="form-control" value={purpose} onChange={e => setPurpose(e.target.value)} />
                 <button type="submit" className="btn btn-success"><i className="bi bi-plus-circle me-1"></i>Book</button>
