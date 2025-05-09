@@ -7,16 +7,17 @@ const Patients = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchPatients = async () => {
-      try {
-        const res = await api.get('/users/search?q='); // Empty query returns all
-        setPatients(res.data.filter(u => u.role === 'patient'));
-      } catch {
-        setError('Failed to fetch patients');
-      }
-    };
-    fetchPatients();
+    fetchPatients('');
   }, []);
+
+  const fetchPatients = async (searchTerm) => {
+    try {
+      const res = await api.get(`/users/search?q=${encodeURIComponent(searchTerm)}`);
+      setPatients(res.data.filter(u => u.role === 'patient'));
+    } catch {
+      setError('Failed to fetch patients');
+    }
+  };
 
   return (
     <div>
@@ -24,6 +25,12 @@ const Patients = () => {
       {error && <div className="alert alert-danger">{error}</div>}
       <div style={{ display: 'flex', gap: 32 }}>
         <div style={{ minWidth: 250 }}>
+          <input
+            type="text"
+            className="form-control mb-2"
+            placeholder="Search by name or email..."
+            onChange={e => fetchPatients(e.target.value)}
+          />
           <ul className="list-group">
             {patients.map(p => (
               <li

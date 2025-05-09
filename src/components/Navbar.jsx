@@ -40,12 +40,26 @@ const Navbar = ({ isAuthenticated, showSidebar = false, children }) => {
           <nav className="col-md-3 col-lg-2 d-md-block bg-white sidebar shadow-sm p-0 pt-4 d-none d-md-block">
             <ul className="nav flex-column gap-2">
               <li className="nav-item"><Link to="/dashboard" className="nav-link"><i className="bi bi-house-door me-2"></i>Home</Link></li>
-              <li className="nav-item"><Link to="/reports" className="nav-link"><i className="bi bi-file-earmark-medical me-2"></i>Reports</Link></li>
-              <li className="nav-item"><Link to="/appointments" className="nav-link"><i className="bi bi-calendar-check me-2"></i>Appointments</Link></li>
-              <li className="nav-item"><Link to="/healthlogs" className="nav-link"><i className="bi bi-bar-chart-line me-2"></i>Health Logs</Link></li>
-              <li className="nav-item"><Link to="/vitals" className="nav-link"><i className="bi bi-heart-pulse me-2"></i>Vitals</Link></li>
-              <li className="nav-item"><Link to="/chat" className="nav-link"><i className="bi bi-chat-dots me-2"></i>Chat</Link></li>
-              <li className="nav-item"><Link to="/notifications" className="nav-link"><i className="bi bi-bell me-2"></i>Notifications</Link></li>
+              {user?.role === 'doctor' && (
+                <>
+                  <li className="nav-item"><Link to="/doctor-dashboard" className="nav-link"><i className="bi bi-person-badge me-2"></i>Patients</Link></li>
+                  <li className="nav-item"><Link to="/reports" className="nav-link"><i className="bi bi-file-earmark-medical me-2"></i>Reports</Link></li>
+                  <li className="nav-item"><Link to="/appointments" className="nav-link"><i className="bi bi-calendar-check me-2"></i>Appointments</Link></li>
+                  <li className="nav-item"><Link to="/vitals" className="nav-link"><i className="bi bi-heart-pulse me-2"></i>Vitals</Link></li>
+                  <li className="nav-item"><Link to="/chat" className="nav-link"><i className="bi bi-chat-dots me-2"></i>Chat</Link></li>
+                  <li className="nav-item"><Link to="/notifications" className="nav-link"><i className="bi bi-bell me-2"></i>Notifications</Link></li>
+                </>
+              )}
+              {user?.role !== 'doctor' && (
+                <>
+                  <li className="nav-item"><Link to="/reports" className="nav-link"><i className="bi bi-file-earmark-medical me-2"></i>Reports</Link></li>
+                  <li className="nav-item"><Link to="/appointments" className="nav-link"><i className="bi bi-calendar-check me-2"></i>Appointments</Link></li>
+                  <li className="nav-item"><Link to="/healthlogs" className="nav-link"><i className="bi bi-bar-chart-line me-2"></i>Health Logs</Link></li>
+                  <li className="nav-item"><Link to="/vitals" className="nav-link"><i className="bi bi-heart-pulse me-2"></i>Vitals</Link></li>
+                  <li className="nav-item"><Link to="/chat" className="nav-link"><i className="bi bi-chat-dots me-2"></i>Chat</Link></li>
+                  <li className="nav-item"><Link to="/notifications" className="nav-link"><i className="bi bi-bell me-2"></i>Notifications</Link></li>
+                </>
+              )}
             </ul>
           </nav>
         )}

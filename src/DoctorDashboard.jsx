@@ -5,6 +5,7 @@ import Vitals from './Vitals';
 import Chat from './Chat';
 import Notifications from './Notifications';
 import Patients from './Patients';
+import DashboardLayout from './DashboardLayout';
 
 const DoctorDashboard = () => {
   const [activeTab, setActiveTab] = useState('appointments');
@@ -28,29 +29,19 @@ const DoctorDashboard = () => {
     }
   };
 
+  // Render tab selection buttons at the top of the main area
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <nav style={{
-        width: '220px',
-        background: '#f5f5f5',
-        padding: '2rem 1rem',
-        borderRight: '1px solid #ddd',
-        minHeight: '100vh',
-      }}>
-        <h2 style={{ fontSize: '1.3rem', marginBottom: '2rem' }}>Doctor Panel</h2>
-        <ul style={{ listStyle: 'none', padding: 0 }}>
-          <li><button onClick={() => setActiveTab('appointments')} style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem', background: activeTab === 'appointments' ? '#e0e0e0' : 'transparent', border: 'none', textAlign: 'left', cursor: 'pointer' }}>Appointments</button></li>
-          <li><button onClick={() => setActiveTab('patients')} style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem', background: activeTab === 'patients' ? '#e0e0e0' : 'transparent', border: 'none', textAlign: 'left', cursor: 'pointer' }}>Patients</button></li>
-          <li><button onClick={() => setActiveTab('reports')} style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem', background: activeTab === 'reports' ? '#e0e0e0' : 'transparent', border: 'none', textAlign: 'left', cursor: 'pointer' }}>Reports</button></li>
-          <li><button onClick={() => setActiveTab('vitals')} style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem', background: activeTab === 'vitals' ? '#e0e0e0' : 'transparent', border: 'none', textAlign: 'left', cursor: 'pointer' }}>Vitals</button></li>
-          <li><button onClick={() => setActiveTab('chat')} style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem', background: activeTab === 'chat' ? '#e0e0e0' : 'transparent', border: 'none', textAlign: 'left', cursor: 'pointer' }}>Chat</button></li>
-          <li><button onClick={() => setActiveTab('notifications')} style={{ width: '100%', padding: '0.5rem', marginBottom: '0.5rem', background: activeTab === 'notifications' ? '#e0e0e0' : 'transparent', border: 'none', textAlign: 'left', cursor: 'pointer' }}>Notifications</button></li>
-        </ul>
-      </nav>
-      <main style={{ flex: 1, padding: '2rem' }}>
-        {renderTab()}
-      </main>
-    </div>
+    <DashboardLayout>
+      <div className="mb-4 d-flex flex-wrap gap-2">
+        <button className={`btn btn-${activeTab==='appointments'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('appointments')}>Appointments</button>
+        <button className={`btn btn-${activeTab==='patients'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('patients')}>Patients</button>
+        <button className={`btn btn-${activeTab==='reports'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('reports')}>Reports</button>
+        <button className={`btn btn-${activeTab==='vitals'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('vitals')}>Vitals</button>
+        <button className={`btn btn-${activeTab==='chat'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('chat')}>Chat</button>
+        <button className={`btn btn-${activeTab==='notifications'?'primary':'outline-primary'}`} onClick={()=>setActiveTab('notifications')}>Notifications</button>
+      </div>
+      {renderTab()}
+    </DashboardLayout>
   );
 };
 

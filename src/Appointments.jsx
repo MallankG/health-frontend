@@ -119,10 +119,21 @@ export default function Appointments() {
             )}
             {/* For doctors, optionally add a patient filter */}
             {user.role === 'doctor' && (
-              <input type="text" placeholder="Filter by patient name..." className="form-control" style={{maxWidth: 200}} onChange={e => {
-                const val = e.target.value.toLowerCase();
-                setAppointments(prev => prev.filter(a => (a.patient?.name || '').toLowerCase().includes(val)));
-              }} />
+              <input
+                type="text"
+                placeholder="Filter by patient name..."
+                className="form-control"
+                style={{maxWidth: 200}}
+                onChange={async e => {
+                  const val = e.target.value;
+                  try {
+                    const res = await api.get(`/appointments?userId=${user._id || user.id}&role=doctor&patientName=${encodeURIComponent(val)}`);
+                    setAppointments(res.data);
+                  } catch {
+                    setError('Failed to fetch appointments');
+                  }
+                }}
+              />
             )}
           </div>
         </div>
