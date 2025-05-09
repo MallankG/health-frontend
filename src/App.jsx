@@ -15,6 +15,7 @@ import DoctorDashboard from './DoctorDashboard';
 import ForgotPassword from './ForgotPassword';
 import ResetPassword from './ResetPassword';
 import DashboardLayout from './DashboardLayout';
+import Patients from './Patients';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
@@ -47,6 +48,11 @@ function App() {
         <Route path="/doctor-dashboard" element={isAuthenticated ? (
           <DashboardLayout>
             <DoctorDashboard />
+          </DashboardLayout>
+        ) : <Navigate to="/login" />} />
+        <Route path="/patients" element={isAuthenticated ? (
+          <DashboardLayout>
+            <Patients />
           </DashboardLayout>
         ) : <Navigate to="/login" />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />

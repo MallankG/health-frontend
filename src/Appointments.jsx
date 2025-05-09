@@ -101,6 +101,15 @@ export default function Appointments() {
     setShowSuggestions(false);
   };
 
+  // Helper to format date as dd/mm/yyyy
+  function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
   return (
     <DashboardLayout>
       <div className="container-fluid">
@@ -165,30 +174,33 @@ export default function Appointments() {
         {success && <div className="alert alert-success">{success}</div>}
         <div className="row g-4">
           {appointments.length === 0 && <div className="col-12 text-center text-muted">No appointments found.</div>}
-          {appointments.map(a => (
-            <div className="col-md-6 col-lg-4" key={a._id}>
-              <div className="card shadow-sm h-100">
-                <div className="card-body d-flex flex-column">
-                  <h5 className="card-title mb-2">{a.date && new Date(a.date).toLocaleString()}</h5>
-                  <div className="mb-2"><span className="badge bg-primary me-2"><i className="bi bi-info-circle me-1"></i>{a.status}</span></div>
-                  <div className="mb-2">Doctor: <span className="fw-semibold">{a.doctor?.name || a.doctor}</span></div>
-                  <div className="mb-2">Patient: <span className="fw-semibold">{a.patient?.name || a.patient}</span></div>
-                  {a.purpose && <div className="mb-2">Purpose: {a.purpose}</div>}
-                  {/* Doctor actions for requested appointments */}
-                  {user.role === 'doctor' && a.status === 'requested' && (
-                    <div className="mt-2 d-flex gap-2">
-                      <button className="btn btn-success btn-sm" onClick={() => handleAccept(a._id)}>
-                        <i className="bi bi-check-circle me-1"></i>Accept
-                      </button>
-                      <button className="btn btn-danger btn-sm" onClick={() => handleDeny(a._id)}>
-                        <i className="bi bi-x-circle me-1"></i>Deny
-                      </button>
-                    </div>
-                  )}
+          {appointments
+            .slice() // copy array
+            .sort((a, b) => new Date(b.date) - new Date(a.date)) // latest first
+            .map(a => (
+              <div className="col-md-6 col-lg-4" key={a._id}>
+                <div className="card shadow-sm h-100">
+                  <div className="card-body d-flex flex-column">
+                    <h5 className="card-title mb-2">{a.date && formatDate(a.date)}</h5>
+                    <div className="mb-2"><span className="badge bg-primary me-2"><i className="bi bi-info-circle me-1"></i>{a.status}</span></div>
+                    <div className="mb-2">Doctor: <span className="fw-semibold">{a.doctor?.name || a.doctor}</span></div>
+                    <div className="mb-2">Patient: <span className="fw-semibold">{a.patient?.name || a.patient}</span></div>
+                    {a.purpose && <div className="mb-2">Purpose: {a.purpose}</div>}
+                    {/* Doctor actions for requested appointments */}
+                    {user.role === 'doctor' && a.status === 'requested' && (
+                      <div className="mt-2 d-flex gap-2">
+                        <button className="btn btn-success btn-sm" onClick={() => handleAccept(a._id)}>
+                          <i className="bi bi-check-circle me-1"></i>Accept
+                        </button>
+                        <button className="btn btn-danger btn-sm" onClick={() => handleDeny(a._id)}>
+                          <i className="bi bi-x-circle me-1"></i>Deny
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
     </DashboardLayout>
