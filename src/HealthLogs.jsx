@@ -100,18 +100,32 @@ export default function HealthLogs() {
         {error && <div className="alert alert-danger">{error}</div>}
         {success && <div className="alert alert-success">{success}</div>}
         <div className="row g-4">
-          {logs.length === 0 && <div className="col-12 text-center text-muted">No health logs found.</div>}
-          {logs.map(l => (
-            <div className="col-md-6 col-lg-4" key={l._id}>
-              <div className="card shadow-sm h-100">
-                <div className="card-body d-flex flex-column">
-                  <h5 className="card-title mb-2">{l.type.charAt(0).toUpperCase() + l.type.slice(1)}</h5>
-                  <div className="mb-2"><span className="badge bg-primary me-2"><i className="bi bi-activity me-1"></i>{l.value}</span></div>
-                  <div className="mb-2">{new Date(l.date).toLocaleDateString()}</div>
-                </div>
+          {logs.length === 0 ? (
+            <div className="col-12 text-center text-muted">No health logs found.</div>
+          ) : (
+            <div className="col-12">
+              <div className="table-responsive">
+                <table className="table table-bordered table-striped align-middle">
+                  <thead className="table-light">
+                    <tr>
+                      <th>Type</th>
+                      <th>Value</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {logs.map(l => (
+                      <tr key={l._id}>
+                        <td>{l.type.charAt(0).toUpperCase() + l.type.slice(1)}</td>
+                        <td>{l.value}</td>
+                        <td>{new Date(l.date).toLocaleDateString()}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
             </div>
-          ))}
+          )}
         </div>
       </div>
     </DashboardLayout>

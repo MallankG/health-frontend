@@ -53,6 +53,15 @@ export default function Vitals() {
     }
   };
 
+  // Helper to group vitals by type
+  function groupByType(vitals) {
+    return vitals.reduce((acc, v) => {
+      acc[v.type] = acc[v.type] || [];
+      acc[v.type].push(v);
+      return acc;
+    }, {});
+  }
+
   return (
     <DashboardLayout>
       <div className="container-fluid">
@@ -93,18 +102,37 @@ export default function Vitals() {
           </div>
         ) : (
           <div className="row g-4">
-            {vitals.length === 0 && <div className="col-12 text-center text-muted">No vitals found.</div>}
-            {vitals.map(v => (
-              <div className="col-md-6 col-lg-4" key={v._id}>
-                <div className="card shadow-sm h-100">
-                  <div className="card-body d-flex flex-column">
-                    <h5 className="card-title mb-2">{v.type.charAt(0).toUpperCase() + v.type.slice(1)}</h5>
-                    <div className="mb-2"><span className="badge bg-primary me-2"><i className="bi bi-activity me-1"></i>{v.value}</span></div>
-                    <div className="mb-2">{new Date(v.date).toLocaleDateString()}</div>
+            {vitals.length === 0 ? (
+              <div className="col-12 text-center text-muted">No vitals found.</div>
+            ) : (
+              Object.entries(groupByType(vitals)).map(([type, vitalsArr]) => (
+                <div className="col-12" key={type}>
+                  <div className="card shadow-sm mb-3">
+                    <div className="card-body">
+                      <h5 className="card-title mb-3">{type === 'bp' ? 'Blood Pressure' : type === 'hr' ? 'Heart Rate' : type === 'glucose' ? 'Glucose' : 'Other'}</h5>
+                      <div className="table-responsive">
+                        <table className="table table-bordered table-striped align-middle mb-0">
+                          <thead className="table-light">
+                            <tr>
+                              <th>Value</th>
+                              <th>Date</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {vitalsArr.map(v => (
+                              <tr key={v._id}>
+                                <td>{v.value}</td>
+                                <td>{new Date(v.date).toLocaleDateString()}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         )}
       </div>
@@ -118,13 +146,37 @@ function PatientVitals({ patientId }) {
     api.get(`/vitals?patient=${patientId}`).then(res => setVitals(res.data));
   }, [patientId]);
   if (vitals.length === 0) return <div className="text-muted">No vitals found.</div>;
+  // Group by type
+  const grouped = vitals.reduce((acc, v) => {
+    acc[v.type] = acc[v.type] || [];
+    acc[v.type].push(v);
+    return acc;
+  }, {});
   return (
-    <ul className="list-group mt-2">
-      {vitals.map(v => (
-        <li key={v._id} className="list-group-item">
-          <b>{v.type.charAt(0).toUpperCase() + v.type.slice(1)}:</b> {v.value} <span className="text-muted">({new Date(v.date).toLocaleDateString()})</span>
-        </li>
+    <div>
+      {Object.entries(grouped).map(([type, vitalsArr]) => (
+        <div key={type} className="mb-3">
+          <h6 className="fw-bold mb-2">{type === 'bp' ? 'Blood Pressure' : type === 'hr' ? 'Heart Rate' : type === 'glucose' ? 'Glucose' : 'Other'}</h6>
+          <div className="table-responsive">
+            <table className="table table-bordered table-striped align-middle mb-0">
+              <thead className="table-light">
+                <tr>
+                  <th>Value</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                {vitalsArr.map(v => (
+                  <tr key={v._id}>
+                    <td>{v.value}</td>
+                    <td>{new Date(v.date).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 }

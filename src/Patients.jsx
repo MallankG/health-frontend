@@ -43,7 +43,7 @@ const Patients = () => {
               <h4>{selectedPatient.name}</h4>
               <p>Email: {selectedPatient.email}</p>
               <p>Role: {selectedPatient.role}</p>
-              {/* Tabs for reports, vitals, health logs */}
+              {/* Tabs for reports, vitals */}
               <Tabs patientId={selectedPatient._id} />
             </div>
           ) : (
@@ -62,11 +62,11 @@ function Tabs({ patientId }) {
       <div className="mb-3">
         <button className={`btn btn-sm me-2 ${tab==='reports'?'btn-primary':'btn-outline-primary'}`} onClick={()=>setTab('reports')}>Reports</button>
         <button className={`btn btn-sm me-2 ${tab==='vitals'?'btn-primary':'btn-outline-primary'}`} onClick={()=>setTab('vitals')}>Vitals</button>
-        <button className={`btn btn-sm ${tab==='logs'?'btn-primary':'btn-outline-primary'}`} onClick={()=>setTab('logs')}>Health Logs</button>
+        {/* Removed Health Logs tab for doctorside */}
       </div>
       {tab==='reports' && <PatientReports patientId={patientId} />}
       {tab==='vitals' && <PatientVitals patientId={patientId} />}
-      {tab==='logs' && <PatientHealthLogs patientId={patientId} />}
+      {/* Removed PatientHealthLogs for doctorside */}
     </div>
   );
 }
@@ -95,20 +95,6 @@ function PatientVitals({ patientId }) {
       <h5>Vitals</h5>
       <ul className="list-group">
         {vitals.map(v => <li key={v._id} className="list-group-item">{v.type}: {v.value} ({new Date(v.date).toLocaleDateString()})</li>)}
-      </ul>
-    </div>
-  );
-}
-function PatientHealthLogs({ patientId }) {
-  const [logs, setLogs] = useState([]);
-  useEffect(() => {
-    api.get(`/healthlogs?patient=${patientId}`).then(res => setLogs(res.data));
-  }, [patientId]);
-  return (
-    <div>
-      <h5>Health Logs</h5>
-      <ul className="list-group">
-        {logs.map(l => <li key={l._id} className="list-group-item">{l.type}: {l.value} ({new Date(l.date).toLocaleDateString()})</li>)}
       </ul>
     </div>
   );

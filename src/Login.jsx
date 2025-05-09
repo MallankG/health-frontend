@@ -71,10 +71,12 @@ export default function Login() {
       const res = await api.post('/auth/login', { email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
-      // Debug: Confirm values are set before navigating
-      console.log('Token set:', localStorage.getItem('token'));
-      console.log('User set:', localStorage.getItem('user'));
-      navigate('/dashboard');
+      // Redirect based on role
+      if (res.data.user.role === 'doctor') {
+        navigate('/doctor-dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed');
     }
