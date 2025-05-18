@@ -52,6 +52,7 @@ const Patients = () => {
               <p>Role: {selectedPatient.role}</p>
               {/* Tabs for reports, vitals */}
               <Tabs patientId={selectedPatient._id} />
+              {/* <PatientPrescriptions patientId={selectedPatient._id} /> */}
             </div>
           ) : (
             <div className="text-muted">Select a patient to view details.</div>
@@ -92,6 +93,7 @@ function PatientReports({ patientId }) {
     </div>
   );
 }
+
 function PatientVitals({ patientId }) {
   const [vitals, setVitals] = useState([]);
   useEffect(() => {
@@ -106,5 +108,26 @@ function PatientVitals({ patientId }) {
     </div>
   );
 }
+
+// function PatientPrescriptions({ patientId }) {
+//   const [prescriptions, setPrescriptions] = useState([]);
+//   useEffect(() => {
+//     api.get(`/prescriptions?patientId=${patientId}`).then(res => setPrescriptions(res.data));
+//   }, [patientId]);
+//   return (
+//     <div>
+//       <h5>Prescriptions</h5>
+//       <ul className="list-group">
+//         {prescriptions.length === 0 && <li className="list-group-item text-muted">No prescriptions for this patient.</li>}
+//         {prescriptions.map(p => (
+//           <li key={p._id} className="list-group-item">
+//             {p.medications.map(m => `${m.name} (${m.dosage}, ${m.frequency})`).join(', ')}
+//             {p.instructions && <div><small>Instructions: {p.instructions}</small></div>}
+//           </li>
+//         ))}
+//       </ul>
+//     </div>
+//   );
+// }
 
 export default Patients;

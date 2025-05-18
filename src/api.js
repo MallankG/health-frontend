@@ -8,4 +8,13 @@ const api = axios.create({
   withCredentials: false,
 });
 
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  console.log('JWT token in interceptor:', token); // Debug log
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 export default api;

@@ -45,6 +45,7 @@ const Navbar = ({ isAuthenticated, showSidebar = false, children }) => {
               {user?.role === 'doctor' && (
                 <>
                   <li className="nav-item"><Link to="/patients" className="nav-link"><i className="bi bi-person-badge me-2"></i>Patients</Link></li>
+                  {/* <li className="nav-item"><Link to="/prescriptions" className="nav-link"><i className="bi bi-capsule me-2"></i>Prescriptions</Link></li> */}
                   <li className="nav-item"><Link to="/reports" className="nav-link"><i className="bi bi-file-earmark-medical me-2"></i>Reports</Link></li>
                   <li className="nav-item"><Link to="/appointments" className="nav-link"><i className="bi bi-calendar-check me-2"></i>Appointments</Link></li>
                   <li className="nav-item"><Link to="/vitals" className="nav-link"><i className="bi bi-heart-pulse me-2"></i>Vitals</Link></li>
@@ -55,6 +56,7 @@ const Navbar = ({ isAuthenticated, showSidebar = false, children }) => {
               {user?.role !== 'doctor' && (
                 <>
                   <li className="nav-item"><Link to="/reports" className="nav-link"><i className="bi bi-file-earmark-medical me-2"></i>Reports</Link></li>
+                  {/* <li className="nav-item"><Link to="/prescriptions" className="nav-link"><i className="bi bi-capsule me-2"></i>Prescriptions</Link></li> */}
                   <li className="nav-item"><Link to="/appointments" className="nav-link"><i className="bi bi-calendar-check me-2"></i>Appointments</Link></li>
                   <li className="nav-item"><Link to="/healthlogs" className="nav-link"><i className="bi bi-bar-chart-line me-2"></i>Health Logs</Link></li>
                   <li className="nav-item"><Link to="/vitals" className="nav-link"><i className="bi bi-heart-pulse me-2"></i>Vitals</Link></li>
