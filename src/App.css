@@ -43,3 +43,46 @@
 .read-the-docs {
   color: #888;
 }
+
+/* SaaS Hero Section Enhancements */
+.saas-hero {
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(120deg, #2563eb 60%, #60a5fa 100%);
+  position: relative;
+}
+.saas-hero-bg {
+  background: radial-gradient(circle at 70% 30%, #fff3 0%, #2563eb00 70%);
+  z-index: 1;
+  pointer-events: none;
+}
+.saas-hero-logo {
+  filter: drop-shadow(0 4px 24px #2563eb55);
+}
+.saas-trusted-bar {
+  font-size: 1rem;
+  box-shadow: 0 2px 16px #0001;
+}
+
+/* Feature Card Enhancements */
+.saas-feature-icon {
+  width: 64px !important;
+  height: 64px !important;
+  font-size: 2.2rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px #2563eb22;
+}
+.saas-feature-icon:hover {
+  transform: translateY(-6px) scale(1.08);
+  box-shadow: 0 8px 24px #2563eb33;
+}
+
+/* Footer */
+.saas-footer {
+  font-size: 1rem;
+  background: #f8fafc !important;
+  color: #64748b !important;
+  border-top: 1px solid #e5e7eb !important;
+}
